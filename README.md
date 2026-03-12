@@ -9,7 +9,7 @@
  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
 ```
 
-**Zero-Trust AWS Security & Compliance Auditing · Version 2.0.3 · 2026**
+**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.0 · 2026**
 
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-0a0a0a?style=flat-square&logo=amazon-aws&logoColor=white)](https://github.com/jenilrupapara001/Cloud-Auditor/releases)
 [![Engine](https://img.shields.io/badge/Engine-Go%201.26.1-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev)
@@ -40,7 +40,7 @@ It fills the gap between free-but-limited open-source tools and prohibitively ex
 │                      THREAT LANDSCAPE TODAY                     │
 ├────────────────┬───────────────────────┬────────────────────────┤
 │   Free Tools   │  Cloud Auditor        │  Enterprise (Wiz etc.) │
-│   (Prowler)    │       (V2.0.3)        │                         │
+│   (Prowler)    │       (V2.1.0)        │                         │
 ├────────────────┼───────────────────────┼────────────────────────┤
 │ ✅ Free        │ ✅ Affordable         │ ❌ $50k–$200k/yr       │
 │ ❌ Ugly UX     │ ✅ Premium Reports    │ ✅ Polished            │
@@ -91,10 +91,10 @@ Grab the latest release from the [Releases](https://github.com/jenilrupapara001/
 
 ```bash
 # macOS — Apple Silicon (M1/M2/M3/M4)
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.0.3/cloud-auditor-darwin-arm64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-darwin-arm64 -o cloud-auditor
 
 # Linux — AMD64
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.0.3/cloud-auditor-linux-amd64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-linux-amd64 -o cloud-auditor
 ```
 
 ### Step 2 — Configure AWS Credentials
@@ -138,7 +138,7 @@ chmod +x cloud-auditor
 |---|---|---|---|
 | `EC2-001` | SSH Port 22 Open to Internet | 🔴 CRITICAL | Free |
 | `EC2-002` | RDP Port 3389 Open to Internet | 🔴 CRITICAL | Free |
-| `EC2-003` | IMDSv2 Not Enforced | 🟠 HIGH | Developer |
+| `EC2.1.0` | IMDSv2 Not Enforced | 🟠 HIGH | Developer |
 | `EC2-004` | EBS Volume Encryption Disabled | 🟠 HIGH | Developer |
 | `EC2-005` | Stopped Instance Age > 30 Days | 🟡 MEDIUM | Developer |
 | `EC2-006` | Subnet Auto-Assign Public IP | 🟠 HIGH | Developer |
@@ -148,7 +148,7 @@ chmod +x cloud-auditor
 | `EC2-010` | ELB Access Logging Disabled | 🟡 MEDIUM | Developer |
 | `EC2-011` | Security Group Allows All Traffic | 🟠 HIGH | Developer |
 | `EC2-012` | Unused Security Group Found | 🟢 LOW | Developer |
-| `EC2-013` | Unassociated Elastic IP | 🟢 LOW | Developer |
+| `EC2.1.0` | Unassociated Elastic IP | 🟢 LOW | Developer |
 | `EC2-014` | MetaData Missing Mandatory Tags | 🟢 LOW | Developer |
 | `EC2-015` | Instance Running Outdated AMI | 🟡 MEDIUM | Developer |
 
