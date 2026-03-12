@@ -138,7 +138,7 @@ chmod +x cloud-auditor
 |---|---|---|---|
 | `EC2-001` | SSH Port 22 Open to Internet | 🔴 CRITICAL | Free |
 | `EC2-002` | RDP Port 3389 Open to Internet | 🔴 CRITICAL | Free |
-| `EC2.1.0` | IMDSv2 Not Enforced | 🟠 HIGH | Developer |
+| `EC2-003` | IMDSv2 Not Enforced | 🟠 HIGH | Developer |
 | `EC2-004` | EBS Volume Encryption Disabled | 🟠 HIGH | Developer |
 | `EC2-005` | Stopped Instance Age > 30 Days | 🟡 MEDIUM | Developer |
 | `EC2-006` | Subnet Auto-Assign Public IP | 🟠 HIGH | Developer |
@@ -148,7 +148,7 @@ chmod +x cloud-auditor
 | `EC2-010` | ELB Access Logging Disabled | 🟡 MEDIUM | Developer |
 | `EC2-011` | Security Group Allows All Traffic | 🟠 HIGH | Developer |
 | `EC2-012` | Unused Security Group Found | 🟢 LOW | Developer |
-| `EC2.1.0` | Unassociated Elastic IP | 🟢 LOW | Developer |
+| `EC2-013` | Unassociated Elastic IP | 🟢 LOW | Developer |
 | `EC2-014` | MetaData Missing Mandatory Tags | 🟢 LOW | Developer |
 | `EC2-015` | Instance Running Outdated AMI | 🟡 MEDIUM | Developer |
 
