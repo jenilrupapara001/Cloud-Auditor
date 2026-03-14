@@ -9,7 +9,7 @@
  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
 ```
 
-**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.0 · 2026**
+**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.6 · 2026**
 
 </div>
 
@@ -20,10 +20,10 @@
 ### macOS (Intel & Apple Silicon)
 ```bash
 # Download (Apple Silicon M1/M2/M3/M4)
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-darwin-arm64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-darwin-arm64 -o cloud-auditor
 
 # OR Download (Intel)
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-darwin-amd64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-darwin-amd64 -o cloud-auditor
 
 # Make executable
 chmod +x cloud-auditor
@@ -34,7 +34,7 @@ chmod +x cloud-auditor
 
 ### Linux (AMD64)
 ```bash
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-linux-amd64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-linux-amd64 -o cloud-auditor
 chmod +x cloud-auditor
 ./cloud-auditor scan --region us-east-1
 ```

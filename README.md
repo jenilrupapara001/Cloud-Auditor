@@ -9,7 +9,7 @@
  ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
 ```
 
-**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.0 · 2026**
+**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.6 · 2026**
 
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-0a0a0a?style=flat-square&logo=amazon-aws&logoColor=white)](https://github.com/jenilrupapara001/Cloud-Auditor/releases)
 [![Engine](https://img.shields.io/badge/Engine-Go%201.26.1-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev)
@@ -40,7 +40,7 @@ It fills the gap between free-but-limited open-source tools and prohibitively ex
 │                      THREAT LANDSCAPE TODAY                     │
 ├────────────────┬───────────────────────┬────────────────────────┤
 │   Free Tools   │  Cloud Auditor        │  Enterprise (Wiz etc.) │
-│   (Prowler)    │       (V2.1.0)        │                         │
+│   (Prowler)    │       (V2.1.6)        │                         │
 ├────────────────┼───────────────────────┼────────────────────────┤
 │ ✅ Free        │ ✅ Affordable         │ ❌ $50k–$200k/yr       │
 │ ❌ Ugly UX     │ ✅ Premium Reports    │ ✅ Polished            │
@@ -71,11 +71,12 @@ RSA-2048 signed responses, hardware-bound licenses, and symbol-stripped binaries
 | Feature | Details |
 |---|---|
 | **82 Security Checks** | S3, EC2, IAM, RDS, KMS, CloudTrail, Lambda, SNS, SQS, EKS, ECS — covering 100% of critical surfaces |
+| **Weighted Scoring** | Service-Weighted Intelligence model provides a realistic posture assessment beyond simple percentages |
 | **4 Compliance Frameworks** | CIS v2.0, SOC 2 Type II, HIPAA, ISO 27001:2022 — auto-mapped per finding |
 | **Parallel Scan Engine** | Go goroutines — all services scanned simultaneously in one pass |
+| **Interactive Dashboard** | Next.js-powered findings dashboard for deep inspection and filtering |
 | **HTML + PDF Reports** | Glassmorphic, interactive reports with charts. PDF via headless Chrome |
 | **Remediation Commands** | Copy-paste AWS CLI fix commands embedded in every finding |
-| **Offline Report Gen** | Embedded HTML templates — no internet needed post-scan |
 | **Hardware Binding** | SHA-256(Motherboard UUID + CPU ID) prevents key sharing |
 | **RSA-2048 Integrity** | Every server response is JWS-signed; public key embedded at compile time |
 | **Binary Hardening** | Symbol-stripped production builds (`-s -w`) defeat IDA Pro and Ghidra |
@@ -91,10 +92,13 @@ Grab the latest release from the [Releases](https://github.com/jenilrupapara001/
 
 ```bash
 # macOS — Apple Silicon (M1/M2/M3/M4)
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-darwin-arm64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-darwin-arm64 -o cloud-auditor
 
 # Linux — AMD64
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.0/cloud-auditor-linux-amd64 -o cloud-auditor
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-linux-amd64 -o cloud-auditor
+
+# Windows — AMD64
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-windows-amd64.exe -o cloud-auditor.exe
 ```
 
 ### Step 2 — Configure AWS Credentials
@@ -124,66 +128,66 @@ chmod +x cloud-auditor
 |---|---|---|---|
 | `S3-001` | Public Access Block Missing | 🔴 CRITICAL | Free |
 | `S3-002` | Bucket ACL Public | 🔴 CRITICAL | Free |
-| `S3-003` | Default Encryption Disabled | 🟠 HIGH | Developer |
-| `S3-004` | Versioning Disabled | 🟡 MEDIUM | Developer |
-| `S3-005` | Logging Disabled | 🟡 MEDIUM | Developer |
-| `S3-006` | MFA Delete Disabled | 🟡 MEDIUM | Developer |
-| `S3-007` | Lifecycle Policy Missing | 🟢 LOW | Developer |
-| `S3-008` | Cross-Region Replication Off | 🟢 LOW | Developer |
-| `S3-009` | Object Lock Not Enabled | 🟢 LOW | Developer |
-| `S3-010` | SSL Not Enforced via Policy | 🟠 HIGH | Developer |
+| `S3-003` | Default Encryption Disabled | 🟠 HIGH | Enterprise |
+| `S3-004` | Versioning Disabled | 🟡 MEDIUM | Enterprise |
+| `S3-005` | Logging Disabled | 🟡 MEDIUM | Enterprise |
+| `S3-006` | MFA Delete Disabled | 🟡 MEDIUM | Enterprise |
+| `S3-007` | Lifecycle Policy Missing | 🟢 LOW | Enterprise |
+| `S3-008` | Cross-Region Replication Off | 🟢 LOW | Enterprise |
+| `S3-009` | Object Lock Not Enabled | 🟢 LOW | Enterprise |
+| `S3-010` | SSL Not Enforced via Policy | 🟠 HIGH | Enterprise |
 
 ### 💻 EC2 — Elastic Compute Cloud (15)
 | ID | Name | Severity | Tier |
 |---|---|---|---|
 | `EC2-001` | SSH Port 22 Open to Internet | 🔴 CRITICAL | Free |
 | `EC2-002` | RDP Port 3389 Open to Internet | 🔴 CRITICAL | Free |
-| `EC2-003` | IMDSv2 Not Enforced | 🟠 HIGH | Developer |
-| `EC2-004` | EBS Volume Encryption Disabled | 🟠 HIGH | Developer |
-| `EC2-005` | Stopped Instance Age > 30 Days | 🟡 MEDIUM | Developer |
-| `EC2-006` | Subnet Auto-Assign Public IP | 🟠 HIGH | Developer |
-| `EC2-007` | Unencrypted Snapshot Found | 🟠 HIGH | Developer |
-| `EC2-008` | Default VPC In Use | 🟡 MEDIUM | Developer |
-| `EC2-009` | VPC Flow Logs Disabled | 🟡 MEDIUM | Developer |
-| `EC2-010` | ELB Access Logging Disabled | 🟡 MEDIUM | Developer |
-| `EC2-011` | Security Group Allows All Traffic | 🟠 HIGH | Developer |
-| `EC2-012` | Unused Security Group Found | 🟢 LOW | Developer |
-| `EC2-013` | Unassociated Elastic IP | 🟢 LOW | Developer |
-| `EC2-014` | MetaData Missing Mandatory Tags | 🟢 LOW | Developer |
-| `EC2-015` | Instance Running Outdated AMI | 🟡 MEDIUM | Developer |
+| `EC2-003` | IMDSv2 Not Enforced | 🟠 HIGH | Enterprise |
+| `EC2-004` | EBS Volume Encryption Disabled | 🟠 HIGH | Enterprise |
+| `EC2-005` | Stopped Instance Age > 30 Days | 🟡 MEDIUM | Enterprise |
+| `EC2-006` | Subnet Auto-Assign Public IP | 🟠 HIGH | Enterprise |
+| `EC2-007` | Unencrypted Snapshot Found | 🟠 HIGH | Enterprise |
+| `EC2-008` | Default VPC In Use | 🟡 MEDIUM | Enterprise |
+| `EC2-009` | VPC Flow Logs Disabled | 🟡 MEDIUM | Enterprise |
+| `EC2-010` | ELB Access Logging Disabled | 🟡 MEDIUM | Enterprise |
+| `EC2-011` | Security Group Allows All Traffic | 🟠 HIGH | Enterprise |
+| `EC2-012` | Unused Security Group Found | 🟢 LOW | Enterprise |
+| `EC2-013` | Unassociated Elastic IP | 🟢 LOW | Enterprise |
+| `EC2-014` | MetaData Missing Mandatory Tags | 🟢 LOW | Enterprise |
+| `EC2-015` | Instance Running Outdated AMI | 🟡 MEDIUM | Enterprise |
 
 ### 🔑 IAM — Identity & Access Management (15)
 | ID | Name | Severity | Tier |
 |---|---|---|---|
 | `IAM-001` | Root Account MFA Disabled | 🔴 CRITICAL | Free |
 | `IAM-002` | Root Account Has Access Keys | 🔴 CRITICAL | Free |
-| `IAM-003` | User Without MFA Enabled | 🟠 HIGH | Developer |
-| `IAM-004` | Access Keys Not Rotated (>90 days) | 🟠 HIGH | Developer |
-| `IAM-005` | Access Keys Unused (>90 days) | 🟡 MEDIUM | Developer |
-| `IAM-006` | Inline Administrator Policy Found | 🟠 HIGH | Developer |
-| `IAM-007` | Managed Administrator Policy Attached | 🟠 HIGH | Developer |
-| `IAM-008` | Weak Account Password Policy | 🟡 MEDIUM | Developer |
-| `IAM-009` | Console Login Without MFA | 🟠 HIGH | Developer |
-| `IAM-010` | Inactive User (>90 days) | 🟡 MEDIUM | Developer |
-| `IAM-011` | Cross-Account Role Without ExternalID | 🟠 HIGH | Developer |
-| `IAM-012` | Policy Allows Full Admin (*:*) | 🟠 HIGH | Developer |
-| `IAM-013` | Empty IAM Group Found | 🟢 LOW | Developer |
-| `IAM-014` | Access Analyzer Not Enabled | 🟢 LOW | Developer |
-| `IAM-015` | Credential Report Stale | 🟢 LOW | Developer |
+| `IAM-003` | User Without MFA Enabled | 🟠 HIGH | Enterprise |
+| `IAM-004` | Access Keys Not Rotated (>90 days) | 🟠 HIGH | Enterprise |
+| `IAM-005` | Access Keys Unused (>90 days) | 🟡 MEDIUM | Enterprise |
+| `IAM-006` | Inline Administrator Policy Found | 🟠 HIGH | Enterprise |
+| `IAM-007` | Managed Administrator Policy Attached | 🟠 HIGH | Enterprise |
+| `IAM-008` | Weak Account Password Policy | 🟡 MEDIUM | Enterprise |
+| `IAM-009` | Console Login Without MFA | 🟠 HIGH | Enterprise |
+| `IAM-010` | Inactive User (>90 days) | 🟡 MEDIUM | Enterprise |
+| `IAM-011` | Cross-Account Role Without ExternalID | 🟠 HIGH | Enterprise |
+| `IAM-012` | Policy Allows Full Admin (*:*) | 🟠 HIGH | Enterprise |
+| `IAM-013` | Empty IAM Group Found | 🟢 LOW | Enterprise |
+| `IAM-014` | Access Analyzer Not Enabled | 🟢 LOW | Enterprise |
+| `IAM-015` | Credential Report Stale | 🟢 LOW | Enterprise |
 
 ### 🗄️ RDS — Relational Database Service (10)
 | ID | Name | Severity | Tier |
 |---|---|---|---|
 | `RDS-001` | DB Publicly Accessible | 🔴 CRITICAL | Free |
-| `RDS-002` | Storage Encryption Disabled | 🟠 HIGH | Developer |
-| `RDS-003` | Automated Backups Disabled | 🟠 HIGH | Developer |
-| `RDS-004` | Multi-AZ Deployment Disabled | 🟡 MEDIUM | Developer |
-| `RDS-005` | DB Running on Default Port | 🟢 LOW | Developer |
-| `RDS-006` | Deletion Protection Disabled | 🟡 MEDIUM | Developer |
-| `RDS-007` | Enhanced Monitoring Disabled | 🟡 MEDIUM | Developer |
-| `RDS-008` | IAM Database Auth Disabled | 🟡 MEDIUM | Developer |
-| `RDS-009` | Log Exports Not Configured | 🟡 MEDIUM | Developer |
-| `RDS-010` | Unencrypted Snapshots Found | 🟠 HIGH | Developer |
+| `RDS-002` | Storage Encryption Disabled | 🟠 HIGH | Enterprise |
+| `RDS-003` | Automated Backups Disabled | 🟠 HIGH | Enterprise |
+| `RDS-004` | Multi-AZ Deployment Disabled | 🟡 MEDIUM | Enterprise |
+| `RDS-005` | DB Running on Default Port | 🟢 LOW | Enterprise |
+| `RDS-006` | Deletion Protection Disabled | 🟡 MEDIUM | Enterprise |
+| `RDS-007` | Enhanced Monitoring Disabled | 🟡 MEDIUM | Enterprise |
+| `RDS-008` | IAM Database Auth Disabled | 🟡 MEDIUM | Enterprise |
+| `RDS-009` | Log Exports Not Configured | 🟡 MEDIUM | Enterprise |
+| `RDS-010` | Unencrypted Snapshots Found | 🟠 HIGH | Enterprise |
 
 ### 🛠️ KMS, CloudTrail, Lambda, SNS, SQS, EKS, ECS (32)
 | Service | Check ID Range | Key Focus Areas |
@@ -210,20 +214,21 @@ Finding: IAM-001 — Root Account MFA Disabled
 
 ---
 
-## 💎 Pricing & Tiers
+## 💎 Pricing & Tiers (Beta)
+*During the beta period, all licensed users are granted Enterprise Tier access.*
 
-| Feature | Free | Developer | Enterprise |
-|---|---|---|---|
-| CRITICAL severity checks | ✅ 8 checks | ✅ 8 checks | ✅ 8 checks |
-| HIGH / MEDIUM / LOW checks | ❌ Blurred | ✅ 74 checks | ✅ 74 checks |
-| CIS v2.0 mapping | ✅ | ✅ | ✅ |
-| SOC 2 / HIPAA / ISO 27001 | ❌ | ❌ | ✅ |
-| HTML Reports | ✅ | ✅ | ✅ |
-| PDF Export | ❌ | ✅ | ✅ |
-| JSON output | ❌ | ✅ | ✅ |
-| Remediation commands | ❌ | ✅ | ✅ |
-| Multi-region scanning | ❌ | ✅ | ✅ |
-| API access | ❌ | ❌ | ✅ |
+| Feature | Free | Enterprise (Beta) |
+|---|---|---|
+| CRITICAL severity checks | ✅ 8 checks | ✅ 8 checks |
+| HIGH / MEDIUM / LOW checks | ❌ Blurred | ✅ 74 checks |
+| CIS v2.0 mapping | ✅ | ✅ |
+| SOC 2 / HIPAA / ISO 27001 | ❌ | ✅ |
+| HTML Reports | ✅ | ✅ |
+| PDF Export | ❌ | ✅ |
+| JSON output | ❌ | ✅ |
+| Remediation commands | ❌ | ✅ |
+| Multi-region scanning | ❌ | ✅ |
+| API access | ❌ | ✅ |
 
 ---
 

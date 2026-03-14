@@ -2,7 +2,16 @@
 
 All notable changes to Cloud Auditor will be documented in this file.
 
-## [2.0.0] - 2026-03-11
+## [2.1.6] - 2026-03-14
+
+### Added
+- **Service-Weighted Security Scoring**: A new balanced algorithm that prevents single-service noise from skewing security posture.
+- **Interactive Findings Dashboard**: Next.js dashboard for local exploration of scan results.
+- **Database-Backed Licensing**: Real-time license verification with support for Enterprise Tier Beta.
+- **Official Windows Support**: AMD64 binaries now available with full feature parity.
+- **Enhanced PDF Aesthetics**: Refined glassmorphic reporting theme for professional security intelligence.
+
+## [2.1.0] - 2026-03-11
 
 ### Added
 - Initial public release of the hardened CLI.
