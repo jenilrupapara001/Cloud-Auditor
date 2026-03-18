@@ -242,7 +242,7 @@ Finding: IAM-001 — Root Account MFA Disabled
 
 <div align="center">
 
-**[cloudauditor.io](https://cloudauditor.io)** · [Releases](https://github.com/jenilrupapara001/Cloud-Auditor/releases) · [Support](mailto:support@cloudauditor.io)
+**[CloudAuditor](https://cloudauditor.vercel.app)** · [Releases](https://github.com/jenilrupapara001/Cloud-Auditor/releases) · [Support](mailto:jenilrupapara48@gmail.com)
 
 *© 2026 Cloud Auditor. All rights reserved.*
 
