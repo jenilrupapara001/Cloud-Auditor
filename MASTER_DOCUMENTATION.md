@@ -34,8 +34,13 @@ Go from zero to your first audit in under 2 minutes.
 
 ### 1. Installation
 Download the binary for your OS:
-- **Mac (M1/M2/M3)**: `curl -L https://cloudauditor.io/dl/darwin-arm64 -o cloud-auditor`
-- **Linux (amd64)**: `curl -L https://cloudauditor.io/dl/linux-amd64 -o cloud-auditor`
+- **macOS (Apple Silicon M1/M2/M3/M4)**: `curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-darwin-arm64 -o cloud-auditor`
+- **macOS (Intel)**: `curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-darwin-amd64 -o cloud-auditor`
+- **Linux (amd64)**: `curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-linux-amd64 -o cloud-auditor`
+- **Linux (ARM64)**: `curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-linux-arm64 -o cloud-auditor`
+- **Windows**: `curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-windows-amd64.exe -o cloud-auditor.exe`
+
+Then make it executable:
 
 ### 2. Environment Setup
 Ensure your local AWS credentials are set:
