@@ -1,249 +1,433 @@
-<div align="center">
+# CLOUD AUDITOR  v2.2.0
+Local-First AWS Security & Compliance Auditor
+Complete README Enterprise Edition
 
-```
- ██████╗██╗      ██████╗ ██╗   ██╗██████╗      █████╗ ██╗   ██╗██████╗ ██╗████████╗ ██████╗ ██████╗
-██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗    ██╔══██╗██║   ██║██╔══██╗██║╚══██╔══╝██╔═══██╗██╔══██╗
-██║     ██║     ██║   ██║██║   ██║██║  ██║    ███████║██║   ██║██║  ██║██║   ██║   ██║   ██║██████╔╝
-██║     ██║     ██║   ██║██║   ██║██║  ██║    ██╔══██║██║   ██║██║  ██║██║   ██║   ██║   ██║██╔══██╗
-╚██████╗███████╗╚██████╔╝╚██████╔╝██████╔╝    ██║  ██║╚██████╔╝██████╔╝██║  ██║   ╚██████╔╝██║  ██║
- ╚═════╝╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
-```
-
-**Zero-Trust AWS Security & Compliance Auditing · Version 2.1.6 · 2026**
-
-[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-0a0a0a?style=flat-square&logo=amazon-aws&logoColor=white)](https://github.com/jenilrupapara001/Cloud-Auditor/releases)
-[![Engine](https://img.shields.io/badge/Engine-Go%201.26.1-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev)
-[![License](https://img.shields.io/badge/License-Proprietary%20EULA-FF4444?style=flat-square)](LICENSE)
-[![Checks](https://img.shields.io/badge/Security%20Checks-82-22c55e?style=flat-square)](#-full-security-check-library-82-checks)
-[![Frameworks](https://img.shields.io/badge/Compliance%20Frameworks-4-6366f1?style=flat-square)](#-compliance-framework-mapping)
-[![Data](https://img.shields.io/badge/Data%20Residency-100%25%20Local-FF6B00?style=flat-square)](#-privacy-model)
-
-<br/>
-
-> **This repository distributes pre-compiled release binaries and documentation.**
-> Cloud Auditor is proprietary software. Source code is not publicly available.
-> Reverse engineering, decompilation, and redistribution are strictly prohibited.
-> See [LICENSE](LICENSE) and [EULA](docs/EULA.md) for full terms.
-
-</div>
+120+
+Security Checks
+13
+AWS Services
+5
+Frameworks
+60s
+First Scan
+Zero
+Data Sent
 
 ---
 
-## What Is Cloud Auditor?
+## 1. Introduction & What's New in v2.2.0
+Cloud Auditor is a hardened, locally-executed AWS security auditing engine designed for security-first engineering teams. It provides comprehensive coverage across 13 AWS services with 120+ built-in checks all running exclusively on your own hardware.
+Version 2.2.0 is the Fix Release. It ships three capabilities that AWS Audit Manager fundamentally cannot offer: an auto-fix engine, native CI/CD integration with SARIF output, and 38 new security checks covering WAF, Secrets Manager, ACM, ElastiCache, OpenSearch, and AWS Config.
 
-Cloud Auditor is a **hardened, locally-executed AWS security auditing engine** built for security engineers, compliance teams, and DevSecOps practitioners who refuse to compromise on privacy or speed.
+### 1.1 Core Philosophy
+- **Local First**:  AWS credentials and scan data never leave your machine. All scanning runs via read-only SDK calls locally.
+- **Fix First**:  Every finding ships with an exact aws-cli command. v2.2.0 adds one-command auto-fix with dry-run and rollback.
+- **CI/CD Native**:  SARIF output, GitHub Actions, score-delta gates—security becomes part of every pull request.
+- **Compliance Ready**:  Automated mapping to CIS v2.0, SOC 2, HIPAA, ISO 27001, and new in v2.2.0: PCI DSS v4.0.
+- **Speed First**:  Highly parallelized Go engine. 120+ checks across 13 services complete in under 60 seconds.
 
-It fills the gap between free-but-limited open-source tools and prohibitively expensive enterprise platforms — delivering **military-grade security architecture, beautiful compliance reports, and sub-30-second scan times**, all without a single byte of your AWS data leaving your machine.
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      THREAT LANDSCAPE TODAY                     │
-├────────────────┬───────────────────────┬────────────────────────┤
-│   Free Tools   │  Cloud Auditor        │  Enterprise (Wiz etc.) │
-│   (Prowler)    │       (V2.1.6)        │                         │
-├────────────────┼───────────────────────┼────────────────────────┤
-│ ✅ Free        │ ✅ Affordable         │ ❌ $50k–$200k/yr       │
-│ ❌ Ugly UX     │ ✅ Premium Reports    │ ✅ Polished            │
-│ ✅ Local       │ ✅ 100% Local         │ ❌ Cloud-to-Cloud      │
-│ ❌ Slow        │ ✅ <30s Scans         │ ✅ Fast                │
-│ ❌ No Binding  │ ✅ Hardware Locked    │ ✅ SSO/SAML            │
-│ ❌ Manual Map  │ ✅ Auto Compliance    │ ✅ Auto Compliance     │
-└────────────────┴───────────────────────┴────────────────────────┘
-```
-
----
-
-## Core Principles
-
-### 🔒 Local First — Absolute Privacy
-Your AWS credentials, scan results, and security findings **never leave your machine**. All scanning is performed via read-only AWS SDK calls on your local hardware. The control plane only handles license validation — it never touches your AWS data.
-
-### ⚡ Speed First — Parallel Execution
-A highly parallelized Go engine scans all **11 AWS services** concurrently via goroutines. Typical accounts complete in **15–30 seconds** — not minutes.
-
-### 🛡️ Security First — Uncrackable Architecture
-RSA-2048 signed responses, hardware-bound licenses, and symbol-stripped binaries form a layered defense that defeats spoofing, proxy attacks, and reverse engineering.
+### 1.2 v2.2.0 Changelog Summary
+| Area | Change | Impact |
+| :--- | :--- | :--- |
+| **Auto-Fix Engine** | `cloud-auditor fix` command with dry-run + rollback | **NEW** |
+| **CI/CD Integration** | SARIF output + GitHub Actions Marketplace action | **NEW** |
+| **Security Checks** | 38 new checks (WAF, Secrets Mgr, ACM, ElastiCache, OpenSearch, Config) | **NEW** |
+| **Frameworks** | PCI DSS v4.0 added—5 frameworks total | **NEW** |
+| **Dashboard** | Inline fix commands, score trend, checklist mode, executive PDF | **ENHANCED** |
+| **Multi-region** | `cloud-auditor scan --all-regions` parallel scan | **NEW** |
+| **Alerts** | Slack and Microsoft Teams webhook notifications | **NEW** |
+| **Install script** | `curl -sSL https://cloudauditor.vercel.app/install.sh | bash` now live | **LIVE** |
 
 ---
 
-## 🔥 Master Feature List
+## 2. System Requirements
+### 2.1 Hardware
+| Component | Minimum | Recommended |
+| :--- | :--- | :--- |
+| **CPU** | 2 cores | 4+ cores |
+| **RAM** | 4 GB | 8+ GB |
+| **Disk** | 500 MB | 1 GB |
+| **Network** | Internet connection | Broadband |
 
-| Feature | Details |
-|---|---|
-| **82 Security Checks** | S3, EC2, IAM, RDS, KMS, CloudTrail, Lambda, SNS, SQS, EKS, ECS — covering 100% of critical surfaces |
-| **Weighted Scoring** | Service-Weighted Intelligence model provides a realistic posture assessment beyond simple percentages |
-| **4 Compliance Frameworks** | CIS v2.0, SOC 2 Type II, HIPAA, ISO 27001:2022 — auto-mapped per finding |
-| **Parallel Scan Engine** | Go goroutines — all services scanned simultaneously in one pass |
-| **Interactive Dashboard** | Next.js-powered findings dashboard for deep inspection and filtering |
-| **HTML + PDF Reports** | Glassmorphic, interactive reports with charts. PDF via headless Chrome |
-| **Remediation Commands** | Copy-paste AWS CLI fix commands embedded in every finding |
-| **Hardware Binding** | SHA-256(Motherboard UUID + CPU ID) prevents key sharing |
-| **RSA-2048 Integrity** | Every server response is JWS-signed; public key embedded at compile time |
-| **Binary Hardening** | Symbol-stripped production builds (`-s -w`) defeat IDA Pro and Ghidra |
-| **Zero Dependencies** | Single binary — no JVM, Python, Node.js, or Docker required |
-| **Cross-Platform** | macOS ARM64/AMD64 · Linux AMD64 · Windows AMD64 |
+### 2.2 Software
+| Requirement | Version / Notes |
+| :--- | :--- |
+| **Operating System** | macOS 10.15+, Ubuntu 18.04+, CentOS 7+, Windows 10+ |
+| **Go** | 1.21+ (only if building from source) |
+| **Node.js** | 18+ (only if running dashboard locally) |
+| **AWS CLI** | Latest (optional, for manual remediation commands) |
+| **Docker** | Only required for LocalStack sandbox testing |
+
+### 2.3 AWS Requirements
+- AWS Account with IAM user/role
+- AWS Access Key ID and Secret Access Key
+- `ReadOnlyAccess` policy OR custom least-privilege policy (see Section 12)
+- **For auto-fix**: IAM user additionally needs write permissions on the services being fixed
 
 ---
 
-## 📥 Quick Start & Installation
-
-### Step 1 — Download the Binary
-Grab the latest release from the [Releases](https://github.com/jenilrupapara001/Cloud-Auditor/releases) page:
-
+## 3. Installation
+### 3.1 One-Line Install (Recommended — New in v2.2.0)
 ```bash
-# macOS — Apple Silicon (M1/M2/M3/M4)
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-darwin-arm64 -o cloud-auditor
-
-# Linux — AMD64
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-linux-amd64 -o cloud-auditor
-
-# Windows — AMD64
-curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.1.6/cloud-auditor-windows-amd64.exe -o cloud-auditor.exe
+curl -sSL https://cloudauditor.vercel.app/install.sh | bash
 ```
+Auto-detects your OS and architecture, downloads the correct binary, makes it executable, and optionally adds it to PATH.
 
-### Step 2 — Configure AWS Credentials
-Cloud Auditor uses your **existing local AWS credential chain**. No new IAM roles or cross-account trust required.
-
+### 3.2 Manual Binary Download
+**macOS Apple Silicon (M1/M2/M3/M4)**
 ```bash
-export AWS_ACCESS_KEY_ID=AKIA...
-export AWS_SECRET_ACCESS_KEY=your-secret-key
-export AWS_DEFAULT_REGION=us-east-1
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-darwin-arm64 -o ~/cloud-auditor
+chmod +x ~/cloud-auditor
 ```
 
-> **Required IAM Policy:** `ReadOnlyAccess` (AWS managed policy).
-> Cloud Auditor **never** writes, modifies, or deletes any AWS resource.
-
-### Step 3 — Make Executable & Scan
+**macOS Intel (x86_64)**
 ```bash
-chmod +x cloud-auditor
-./cloud-auditor scan --region us-east-1
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-darwin-amd64 -o ~/cloud-auditor
+chmod +x ~/cloud-auditor
+```
+
+**Linux AMD64**
+```bash
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-linux-amd64 -o ~/cloud-auditor
+chmod +x ~/cloud-auditor
+```
+
+**Linux ARM64 (Graviton)**
+```bash
+curl -L https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-linux-arm64 -o ~/cloud-auditor
+chmod +x ~/cloud-auditor
+```
+
+**Windows (PowerShell)**
+```powershell
+Invoke-WebRequest -Uri https://github.com/jenilrupapara001/Cloud-Auditor/releases/download/v2.2.0/cloud-auditor-windows-amd64.exe -OutFile cloud-auditor.exe
+```
+
+### 3.3 System-Wide Install
+```bash
+sudo mv ~/cloud-auditor /usr/local/bin/cloud-auditor
+cloud-auditor version
+```
+
+### 3.4 macOS Security Warning Fix
+```bash
+xattr -d com.apple.quarantine ~/cloud-auditor
+```
+Or: **System Settings > Privacy & Security > Allow Anyway**
+
+### 3.5 Build from Source
+```bash
+git clone https://github.com/jenilrupapara001/Cloud-Auditor-CLI.git
+cd Cloud-Auditor-CLI
+go build -o cloud-auditor -ldflags="-s -w" main.go
+```
+
+### 3.6 Verify Installation
+```bash
+cloud-auditor version
+# Expected: cloud-auditor v2.2.0
 ```
 
 ---
 
-## 📚 Full Security Check Library (82 Checks)
+## 4. Quick Start Guide
+From zero to your first security report in under 5 minutes.
 
-### ☁️ S3 — Simple Storage Service (10)
-| ID | Name | Severity | Tier |
-|---|---|---|---|
-| `S3-001` | Public Access Block Missing | 🔴 CRITICAL | Free |
-| `S3-002` | Bucket ACL Public | 🔴 CRITICAL | Free |
-| `S3-003` | Default Encryption Disabled | 🟠 HIGH | Enterprise |
-| `S3-004` | Versioning Disabled | 🟡 MEDIUM | Enterprise |
-| `S3-005` | Logging Disabled | 🟡 MEDIUM | Enterprise |
-| `S3-006` | MFA Delete Disabled | 🟡 MEDIUM | Enterprise |
-| `S3-007` | Lifecycle Policy Missing | 🟢 LOW | Enterprise |
-| `S3-008` | Cross-Region Replication Off | 🟢 LOW | Enterprise |
-| `S3-009` | Object Lock Not Enabled | 🟢 LOW | Enterprise |
-| `S3-010` | SSL Not Enforced via Policy | 🟠 HIGH | Enterprise |
+**Step 1: Install the binary**
+```bash
+curl -sSL https://cloudauditor.io/install.sh | bash
+```
 
-### 💻 EC2 — Elastic Compute Cloud (15)
-| ID | Name | Severity | Tier |
-|---|---|---|---|
-| `EC2-001` | SSH Port 22 Open to Internet | 🔴 CRITICAL | Free |
-| `EC2-002` | RDP Port 3389 Open to Internet | 🔴 CRITICAL | Free |
-| `EC2-003` | IMDSv2 Not Enforced | 🟠 HIGH | Enterprise |
-| `EC2-004` | EBS Volume Encryption Disabled | 🟠 HIGH | Enterprise |
-| `EC2-005` | Stopped Instance Age > 30 Days | 🟡 MEDIUM | Enterprise |
-| `EC2-006` | Subnet Auto-Assign Public IP | 🟠 HIGH | Enterprise |
-| `EC2-007` | Unencrypted Snapshot Found | 🟠 HIGH | Enterprise |
-| `EC2-008` | Default VPC In Use | 🟡 MEDIUM | Enterprise |
-| `EC2-009` | VPC Flow Logs Disabled | 🟡 MEDIUM | Enterprise |
-| `EC2-010` | ELB Access Logging Disabled | 🟡 MEDIUM | Enterprise |
-| `EC2-011` | Security Group Allows All Traffic | 🟠 HIGH | Enterprise |
-| `EC2-012` | Unused Security Group Found | 🟢 LOW | Enterprise |
-| `EC2-013` | Unassociated Elastic IP | 🟢 LOW | Enterprise |
-| `EC2-014` | MetaData Missing Mandatory Tags | 🟢 LOW | Enterprise |
-| `EC2-015` | Instance Running Outdated AMI | 🟡 MEDIUM | Enterprise |
+**Step 2: Configure AWS Credentials**
+- **Option A: Environment Variables (Recommended)**
+  ```bash
+  export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+  export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  export AWS_DEFAULT_REGION=us-east-1
+  ```
+- **Option B: Interactive Wizard**
+  ```bash
+  cloud-auditor configure
+  ```
+- **Option C: Named AWS Profile**
+  ```bash
+  cloud-auditor scan --profile my-aws-profile --region us-east-1
+  ```
 
-### 🔑 IAM — Identity & Access Management (15)
-| ID | Name | Severity | Tier |
-|---|---|---|---|
-| `IAM-001` | Root Account MFA Disabled | 🔴 CRITICAL | Free |
-| `IAM-002` | Root Account Has Access Keys | 🔴 CRITICAL | Free |
-| `IAM-003` | User Without MFA Enabled | 🟠 HIGH | Enterprise |
-| `IAM-004` | Access Keys Not Rotated (>90 days) | 🟠 HIGH | Enterprise |
-| `IAM-005` | Access Keys Unused (>90 days) | 🟡 MEDIUM | Enterprise |
-| `IAM-006` | Inline Administrator Policy Found | 🟠 HIGH | Enterprise |
-| `IAM-007` | Managed Administrator Policy Attached | 🟠 HIGH | Enterprise |
-| `IAM-008` | Weak Account Password Policy | 🟡 MEDIUM | Enterprise |
-| `IAM-009` | Console Login Without MFA | 🟠 HIGH | Enterprise |
-| `IAM-010` | Inactive User (>90 days) | 🟡 MEDIUM | Enterprise |
-| `IAM-011` | Cross-Account Role Without ExternalID | 🟠 HIGH | Enterprise |
-| `IAM-012` | Policy Allows Full Admin (*:*) | 🟠 HIGH | Enterprise |
-| `IAM-013` | Empty IAM Group Found | 🟢 LOW | Enterprise |
-| `IAM-014` | Access Analyzer Not Enabled | 🟢 LOW | Enterprise |
-| `IAM-015` | Credential Report Stale | 🟢 LOW | Enterprise |
+**Step 3: Run Your First Scan**
+```bash
+cloud-auditor scan
+```
+The dashboard opens automatically at `http://localhost:3001/findings-dashboard` with your full report.
 
-### 🗄️ RDS — Relational Database Service (10)
-| ID | Name | Severity | Tier |
-|---|---|---|---|
-| `RDS-001` | DB Publicly Accessible | 🔴 CRITICAL | Free |
-| `RDS-002` | Storage Encryption Disabled | 🟠 HIGH | Enterprise |
-| `RDS-003` | Automated Backups Disabled | 🟠 HIGH | Enterprise |
-| `RDS-004` | Multi-AZ Deployment Disabled | 🟡 MEDIUM | Enterprise |
-| `RDS-005` | DB Running on Default Port | 🟢 LOW | Enterprise |
-| `RDS-006` | Deletion Protection Disabled | 🟡 MEDIUM | Enterprise |
-| `RDS-007` | Enhanced Monitoring Disabled | 🟡 MEDIUM | Enterprise |
-| `RDS-008` | IAM Database Auth Disabled | 🟡 MEDIUM | Enterprise |
-| `RDS-009` | Log Exports Not Configured | 🟡 MEDIUM | Enterprise |
-| `RDS-010` | Unencrypted Snapshots Found | 🟠 HIGH | Enterprise |
+**Step 4: Fix Critical Findings (New in v2.2.0)**
+```bash
+cloud-auditor fix --dry-run --severity critical
+# Preview all changes without applying them
 
-### 🛠️ KMS, CloudTrail, Lambda, SNS, SQS, EKS, ECS (32)
-| Service | Check ID Range | Key Focus Areas |
-|---|---|---|
-| **KMS** | `KMS-001` - `KMS-010` | Key rotation, policy safety, exposure, encryption context |
-| **CloudTrail** | `CT-001` - `CT-005` | Multi-region logging, file validation, S3 integration, KMS |
-| **Lambda** | `LMB-001` - `LMB-005` | Public access, env encryption, DLQs, VPC residency |
-| **SNS/SQS** | `SNS/SQ-01–10` | Server-side encryption, policy wildcards, dead letters |
-| **EKS/ECS** | `EKS/EC-01–12` | Endpoint security, logging, task definition hardening |
-
----
-
-## 📈 Compliance Framework Mapping
-Every finding is automatically cross-referenced against four major compliance frameworks.
-
-```text
-Finding: IAM-001 — Root Account MFA Disabled
-│
-├── CIS v2.0    → CIS 1.5   "Ensure MFA is enabled for the root user account"
-├── SOC 2       → CC6.1     "Logical and Physical Access Controls"
-├── HIPAA       → 164.312(d) "Person or Entity Authentication"
-└── ISO 27001   → A.9.4.2   "Secure log-on procedures"
+cloud-auditor fix --severity critical
+# Apply fixes. Rollback log saved to ~/.cloud-auditor/rollback.json
 ```
 
 ---
 
-## 💎 Pricing & Tiers (Beta)
-*During the beta period, all licensed users are granted Enterprise Tier access.*
+## 5. CLI Commands Reference
+### 5.1 Main Commands
+| Command | Description |
+| :--- | :--- |
+| `cloud-auditor scan` | Run a full security scan |
+| `cloud-auditor fix` | Auto-fix findings (NEW in v2.2.0) |
+| `cloud-auditor configure` | Interactive setup wizard |
+| `cloud-auditor login` | Authenticate with license key |
+| `cloud-auditor logout` | Remove stored license |
+| `cloud-auditor status` | Show license tier and expiry |
+| `cloud-auditor version` | Display version number |
+| `cloud-auditor update` | Update to latest version |
+| `cloud-auditor checks --list` | List all 120+ checks with details |
 
-| Feature | Free | Enterprise (Beta) |
-|---|---|---|
-| CRITICAL severity checks | ✅ 8 checks | ✅ 8 checks |
-| HIGH / MEDIUM / LOW checks | ❌ Blurred | ✅ 74 checks |
-| CIS v2.0 mapping | ✅ | ✅ |
-| SOC 2 / HIPAA / ISO 27001 | ❌ | ✅ |
-| HTML Reports | ✅ | ✅ |
-| PDF Export | ❌ | ✅ |
-| JSON output | ❌ | ✅ |
-| Remediation commands | ❌ | ✅ |
-| Multi-region scanning | ❌ | ✅ |
-| API access | ❌ | ✅ |
+### 5.2 Scan Flags
+| Flag | Short | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `--region` | `-r` | `us-east-1` | AWS region to scan |
+| `--all-regions` | — | `false` | Scan all AWS regions in parallel (NEW v2.2.0) |
+| `--profile` | `-p` | `default` | AWS CLI profile to use |
+| `--output` | `-o` | `html` | Format: `html`, `json`, `pdf`, `sarif` (NEW v2.2.0) |
+| `--framework` | `-f` | `all` | Filter: `soc2`, `hipaa`, `cis`, `iso27001`, `pcidss` (NEW) |
+| `--services` | `-s` | `all` | Filter: `s3`, `ec2`, `iam`, `rds`, `waf`, `secretsmanager`, ... |
+| `--severity` | — | `all` | Filter: `critical`, `high`, `medium`, `low` |
+| `--open` | — | `true` | Auto-open dashboard after scan |
+| `--port` | — | `3001` | Dashboard server port |
+| `--fail-if-score-drops-by` | — | — | Exit code 1 if score drops by N points (NEW) |
+
+### 5.3 Fix Flags (NEW in v2.2.0)
+| Flag | Default | Description |
+| :--- | :--- | :--- |
+| `--severity` | `critical` | Fix findings at this severity level: `critical`, `high`, `medium`, `all` |
+| `--id` | — | Fix a single finding by its check ID, e.g. `--id EC2-001` |
+| `--dry-run` | `false` | Show exactly what would change without applying anything |
+| `--services` | `all` | Limit fixes to specific services: `--services s3,iam` |
+| `--rollback` | — | Undo the last fix session using the rollback log |
+
+### 5.4 Usage Examples
+**Basic scans**
+```bash
+cloud-auditor scan                                    # Full scan, HTML report
+cloud-auditor scan -r us-west-2 -o pdf               # PDF output, specific region
+cloud-auditor scan --all-regions -o json             # All regions, JSON output
+cloud-auditor scan --services s3,iam                 # Specific services only
+```
+
+**Compliance scans**
+```bash
+cloud-auditor scan --framework soc2 -o pdf           # SOC 2 PDF report
+cloud-auditor scan --framework hipaa                 # HIPAA check
+cloud-auditor scan --framework pcidss                # PCI DSS v4.0 (NEW)
+cloud-auditor scan --framework cis                   # CIS v2.0 benchmark
+```
+
+**Auto-fix (NEW in v2.2.0)**
+```bash
+cloud-auditor fix --dry-run --severity critical      # Preview critical fixes
+cloud-auditor fix --severity critical                # Apply critical fixes
+cloud-auditor fix --id S3-001                       # Fix one specific check
+cloud-auditor fix --severity high --services s3,ec2 # Fix high findings in S3 + EC2
+cloud-auditor fix --rollback                        # Undo last fix session
+```
+
+**CI/CD pipeline (NEW in v2.2.0)**
+```bash
+cloud-auditor scan --output sarif > results.sarif    # GitHub Security tab native
+cloud-auditor scan --output json > findings.json     # Machine-readable for pipelines
+cloud-auditor scan --fail-if-score-drops-by 10      # Fail build if score drops
+```
 
 ---
 
-## 🔒 Privacy Model: Local-First
-1.  **Read-Only Operations**: No AWS `write` permissions required.
-2.  **No AWS Data Exfiltration**: Your account configuration never leaves your machine.
-3.  **No AWS Credentials Stored**: We use your local AWS credential chain.
-4.  **Local Report Rendering**: All processing happens on your local CPU.
+## 6. Auto-Fix Engine (NEW in v2.2.0)
+Cloud Auditor v2.2.0 introduces the auto-fix engine—the capability that fundamentally separates it from every evidence-only compliance tool including AWS Audit Manager. Every fix is reversible, previewed before application, and logged for auditing.
+
+### 6.1 How It Works
+1. `cloud-auditor fix` reads the most recent scan results from `web/scans/latest.json`.
+2. For each qualifying finding, it maps the check ID to its corresponding dynamic fix logic.
+3. In **dry-run mode**, it prints every action that would occur—nothing is changed.
+4. In **apply mode**, it executes each fix via the AWS SDK.
+5. Every change is logged to `~/.cloud-auditor/rollback.json` with the original resource state.
+6. `cloud-auditor fix --rollback` reads that log and reverses changes in reverse order.
+
+### 6.2 Fix Coverage by Service
+| Service | Fixable Checks | Example Auto-Fix |
+| :--- | :--- | :--- |
+| **S3** | S3-001 to S3-005 | Block public access, enable encryption, enable versioning |
+| **EC2** | EC2-001 to EC2-009 | Revoke open SSH/RDP, enforce IMDSv2, enable EBS encryption |
+| **IAM** | IAM-002 to IAM-008 | Delete root access keys, rotate old keys, fix password policy |
+| **RDS** | RDS-001 to RDS-006 | Disable public access, enable backups, enable Multi-AZ |
+| **KMS** | KMS-001 to KMS-003 | Enable key rotation |
+| **CloudTrail** | CT-001 to CT-003 | Enable trail, enable file validation, enable multi-region |
+| **Secrets Mgr** | SM-001, SM-002 | Enable rotation, delete unused secrets (NEW in v2.2.0) |
+
+### 6.3 Dry-Run Output Example
+```bash
+$ cloud-auditor fix --dry-run --severity critical
+
+DRY RUN MODE: No changes will be applied
+Found 3 critical findings to fix:
+
+[1/3] S3-001: Public Access Block Missing on bucket: my-prod-bucket
+#  Would run: aws s3api put-public-access-block --bucket my-prod-bucket \
+#    --public-access-block-configuration '{"BlockPublicAcls":true,...}'
+
+[2/3] EC2-001: SSH Port 22 Open to Internet on sg-0abc1234
+#  Would run: aws ec2 revoke-security-group-ingress --group-id sg-0abc1234 \
+#    --protocol tcp --port 22 --cidr 0.0.0.0/0
+
+[3/3] IAM-002: Root Account Has Access Keys
+#  Would run: aws iam delete-access-key --access-key-id AKIA...
+
+Run without --dry-run to apply all 3 fixes.
+```
 
 ---
 
-<div align="center">
+## 7. CI/CD & DevOps Integration (NEW in v2.2.0)
+Cloud Auditor v2.2.0 is the first local AWS security tool with native CI/CD integration. It can run in any pipeline, block deploys on new critical findings, and post results directly to GitHub's Security tab.
 
-**[CloudAuditor](https://cloudauditor.vercel.app)** · [Releases](https://github.com/jenilrupapara001/Cloud-Auditor/releases) · [Support](mailto:jenilrupapara48@gmail.com)
+### 7.1 GitHub Actions
+**Basic scan on every push**
+```yaml
+# .github/workflows/cloud-auditor.yml
+name: Cloud Auditor Security Scan
+on: [push, pull_request]
 
-*© 2026 Cloud Auditor. All rights reserved.*
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
 
-</div>
+      - name: Install Cloud Auditor
+        run: curl -sSL https://cloudauditor.vercel.app/install.sh | bash
+
+      - name: Run Security Scan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+        run: cloud-auditor scan --output sarif > results.sarif
+
+      - name: Upload to GitHub Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+```
+
+**Advanced: fail PR if regressions introduced**
+```yaml
+      - name: Score-Delta Gate
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: cloud-auditor scan --fail-if-score-drops-by 5 --output json
+        # Exits with code 1 if security score drops by 5+ points
+```
+
+---
+
+## 8. Security Checks (120+ Total)
+### 8.1 New Services Added in v2.2.0
+| Service | Checks | Key Findings Covered |
+| :--- | :--- | :--- |
+| **WAF** | 8 | Rules enabled, logging on, rate limiting configured, SQLi/XSS rules |
+| **Secrets Manager** | 6 | Rotation enabled, unused secrets, plaintext secrets in env vars |
+| **ACM** | 7 | Expiring certs (<30 days), expired certs, wildcard cert usage |
+| **ElastiCache** | 6 | Encryption in-transit/at-rest, Redis AUTH disabled |
+| **OpenSearch** | 6 | VPC placement, public access policies, node-to-node encryption |
+| **AWS Config** | 5 | Recorder not enabled, delivery channel missing, rules not deployed |
+
+---
+
+## 9. Compliance Frameworks
+| Framework | Checks | Tier | Status |
+| :--- | :--- | :--- | :--- |
+| **CIS v2.0** | 45+ | **FREE** | Existing |
+| **SOC 2** | 55+ | **ENTERPRISE** | Existing |
+| **HIPAA** | 45+ | **ENTERPRISE** | Existing |
+| **ISO 27001** | 55+ | **ENTERPRISE** | Existing |
+| **PCI DSS v4.0** | 40+ | **ENTERPRISE** | **NEW** |
+
+---
+
+## 10. Dashboard Guide (v2.2.0 Enhanced)
+URL: `http://localhost:3001/findings-dashboard` auto-opens after every scan.
+
+### 10.1 New Dashboard Features in v2.2.0
+- **Inline fix commands**: Every finding row shows its `aws-cli` fix command for instant copying.
+- **Score trend line**: Line chart tracking your security score across the last 10 scans.
+- **Fix-it checklist mode**: Mark findings as in-progress or resolved (persists between sessions).
+- **Executive summary card**: 30-second management briefing with top risks and score deltas.
+- **One-click branded PDF**: Generate professional reports directly from the UI.
+
+---
+
+## 11. Slack & Teams Alerts (NEW in v2.2.0)
+Cloud Auditor can send webhook notifications when new **CRITICAL** or **HIGH** findings are detected.
+
+### 11.1 Configuration Example (`config.json`)
+```json
+{
+  "slack_webhook": "https://hooks.slack.com/services/...",
+  "alert_on_severity": ["critical", "high"],
+  "alert_mode": "new_only"
+}
+```
+
+---
+
+## 12. Multi-Region Scanning (NEW in v2.2.0)
+v2.2.0 introduces parallel multi-region scanning using Go goroutines.
+```bash
+cloud-auditor scan --all-regions
+```
+The dashboard shows an aggregate score plus a per-region breakdown. Scans all 20+ AWS regions in parallel for a unified compliance view.
+
+---
+
+## 13. LocalStack Sandbox Testing
+Test Cloud Auditor including the auto-fix engine without a real AWS account using LocalStack.
+```bash
+export AWS_ENDPOINT_URL=http://localhost:4566
+cloud-auditor scan --region us-east-1
+```
+
+---
+
+## 14. Architecture & Security Model
+### 14.1 Security Model
+Cloud Auditor **NEVER**:
+- Stores AWS credentials to disk.
+- Sends resource names or findings to external servers.
+- Uploads scan results.
+- Makes write calls unless `cloud-auditor fix` is explicitly invoked.
+
+What the license server receives: **SHA-256 machine fingerprint + scan timestamp + security score number**. That is all.
+
+---
+
+## 15. Troubleshooting & FAQ
+### 15.1 FAQ
+**Q: Will Cloud Auditor modify my AWS resources without asking?**
+No. Scans are 100% read-only. The fix engine only runs when you explicitly invoke `cloud-auditor fix`, and dry-run is the default.
+
+**Q: Can I use it in CI/CD pipelines?**
+Yes. Use `--output sarif` for GitHub Security tab integration or `--output json` for custom pipelines.
+
+**Q: What happens after my 1-week Enterprise trial?**
+Your account reverts to the Free tier automatically. All scan history is preserved. Upgrade anytime from `cloudauditor.vercel.app`.
+
+---
+
+[**Dashboard**](https://cloudauditor.vercel.app) | [**GitHub**](https://github.com/jenilrupapara001/Cloud-Auditor) | [**Releases**](https://github.com/jenilrupapara001/Cloud-Auditor/releases)
+
+© 2026 Cloud Auditor. Built for the privacy-conscious cloud.
